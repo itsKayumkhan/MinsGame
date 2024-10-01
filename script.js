@@ -1,21 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gridContainer = document.getElementById('grid-container');
-    const timerDisplay = document.getElementById('timer-display');
+    const timerDisplay = document.getElementById('timer-display'); // Assuming this exists in your HTML
     const highlightButton = document.getElementById('highlight-button');
     const popupModal = document.getElementById('popup-modal');
-    const acceptButton = document.getElementById('accept-button');
     const closeButton = document.getElementById('close-button');
 
     // Check if the user has visited before
     if (!localStorage.getItem('hasVisited')) {
         popupModal.classList.remove('hidden');
     }
-
-    // Handle accept button
-    acceptButton.addEventListener('click', () => {
-        localStorage.setItem('hasVisited', 'true');
-        popupModal.classList.add('hidden');
-    });
 
     // Handle close button
     closeButton.addEventListener('click', () => {
@@ -32,23 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Define corner indices
     const cornerIndices = [0, 4, 20, 24];
 
+    // Highlight boxes when the button is clicked
     highlightButton.addEventListener('click', () => {
-        highlightBoxes();
-        
-        // Disable the button to prevent multiple clicks
-        highlightButton.disabled = true;
-
-        // Start the countdown for 1 minute
-        startTimer(60);
-
-        // Highlight boxes again after 1 minute and re-enable the button
-        setTimeout(() => {
-            highlightButton.disabled = false;
-            highlightBoxes();
-        }, 60000); // 1 minute
-    });
-
-    function highlightBoxes() {
         // Remove previous highlights
         document.querySelectorAll('.highlighted').forEach(box => {
             box.classList.remove('bg-purple-500', 'highlighted', 'scale-110');
@@ -56,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let highlightedIndices = [];
 
-        while (highlightedIndices.length < 3) {
+        while (highlightedIndices.length < 4) {
             let randomIndex;
 
             // Increase the chance of avoiding corner indices
@@ -73,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 gridContainer.children[randomIndex].classList.add('bg-purple-500', 'highlighted', 'scale-110');
             }
         }
-    }
+    });
 
     function isValidIndex(index, highlightedIndices) {
         const row = Math.floor(index / 5);
@@ -92,19 +70,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
-    // Timer function
-    function startTimer(duration) {
-        let timeRemaining = duration;
-        timerDisplay.innerText = `Time left: ${timeRemaining} seconds`;
+    // Timer function (currently commented out)
+    // function startTimer(duration) {
+    //     let timeRemaining = duration;
+    //     timerDisplay.innerText = `Time left: ${timeRemaining} seconds`;
 
-        const countdown = setInterval(() => {
-            timeRemaining--;
-            timerDisplay.innerText = `Time left: ${timeRemaining} seconds`;
+    //     const countdown = setInterval(() => {
+    //         timeRemaining--;
+    //         timerDisplay.innerText = `Time left: ${timeRemaining} seconds`;
 
-            if (timeRemaining <= 0) {
-                clearInterval(countdown);
-                timerDisplay.innerText = "Ready!";
-            }
-        }, 1000); // Update every second
-    }
+    //         if (timeRemaining <= 0) {
+    //             clearInterval(countdown);
+    //             timerDisplay.innerText = "Ready!";
+    //         }
+    //     }, 1000); // Update every second
+    // }
 });
